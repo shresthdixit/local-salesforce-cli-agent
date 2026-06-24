@@ -1,0 +1,21 @@
+scratch:
+  allow_deploy: true
+  allow_data_write: true
+  allow_destructive: false
+  require_approval: true
+  blocked_entirely: false
+
+sandbox:
+  allow_deploy: true
+  allow_data_write: false
+  allow_destructive: false
+  require_approval: true
+  blocked_entirely: false
+
+production:
+  allow_deploy: false
+  allow_data_write: false
+  allow_destructive: false
+  require_approval: true
+  blocked_entirely: true
+  blocked_reason: "Production deploys are blocked by default in this local scaffold."

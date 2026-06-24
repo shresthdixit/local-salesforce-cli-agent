@@ -1,0 +1,2 @@
+agent/traces/*
+!agent/traces/.gitkeep
