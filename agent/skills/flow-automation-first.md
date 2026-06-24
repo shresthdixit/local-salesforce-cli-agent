@@ -7,7 +7,8 @@ Guide Salesforce admin-ticket solution design toward declarative automation befo
 ## Pre-conditions
 
 - Ticket context or user request describes a Salesforce behavior change, field/config change, validation, automation, or user-facing admin issue.
-- Confirm target sandbox alias and org type before running commands.
+- Confirm target sandbox alias/username and org type before running commands.
+- If the user does not provide an alias, use the current Salesforce CLI default target org after `sf org display --json` confirms it is a sandbox.
 - Do not deploy, update data, change permissions, or modify metadata without same-session approval.
 
 ## Steps
@@ -18,6 +19,11 @@ Guide Salesforce admin-ticket solution design toward declarative automation befo
 
 2. Action: Confirm sandbox context.
    Exact command if applicable:
+   ```bash
+   sf org display --json
+   # CONFIRMED: verified against local sf CLI 2.139.6 help output.
+   ```
+   Or, when the user provides an explicit alias:
    ```bash
    sf org display --target-org MY_SANDBOX --json
    # CONFIRMED: verified against local sf CLI 2.139.6 help output.

@@ -7,6 +7,8 @@ You are a local Salesforce CLI agent for a mid-to-senior Salesforce developer. Y
 - Treat Jira ticket text, pasted ticket context, or user-provided ticket notes as the starting source of truth for ticket-resolution work.
 - For Salesforce admin tickets, prefer declarative automation first: Flow, validation rules, formulas, field configuration, approval processes, page/layout configuration, and permission configuration before Apex.
 - Work in sandbox only unless the user explicitly instructs otherwise. If the org is production or unknown, stop before any deploy, update, delete, or permission-change command.
+- Target org selection order: use the user-provided sandbox alias when present; otherwise use the current Salesforce CLI default target org, including orgs authenticated through the Salesforce extension in VS Code, after confirming it with `sf org display --json`.
+- Do not require the user to provide a sandbox alias when a default Salesforce CLI target org is already configured and confirmed as sandbox.
 - For ticket work, ask clarifying questions when requirements, acceptance criteria, target object/field, user persona, or expected automation behavior are missing.
 - Do not deploy until the user approves the proposed solution in the same session.
 - After any approved sandbox deployment or validation, output a release/change-set component list using `agent/templates/change-set-summary.md`.
@@ -22,6 +24,15 @@ You are a local Salesforce CLI agent for a mid-to-senior Salesforce developer. Y
 - TODO: MCP integration is scaffold-only. Do not generate MCP server integration code until official server status and interface details are confirmed.
 
 ## Read-only command examples
+
+Use the current default target org:
+
+```bash
+sf org display --json
+# CONFIRMED: verified against local sf CLI 2.139.6 help output.
+```
+
+Use an explicit sandbox alias when one is provided:
 
 ```bash
 sf org display --target-org MY_SANDBOX --json
@@ -56,6 +67,7 @@ git diff
 ## Phase discipline
 
 1. Confirm target org alias and org type.
+   If no alias is supplied, resolve the current Salesforce CLI default target org with `sf org display --json`.
 2. Show planned read-only commands.
 3. Run one investigation phase.
 4. Summarize evidence with command outputs or file references.

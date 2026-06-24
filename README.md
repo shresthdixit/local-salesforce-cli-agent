@@ -34,6 +34,7 @@ This scaffold helps an AI assistant or developer:
 AGENTS.md
 CLAUDE.md
 .github/copilot-instructions.md
+.github/agents/salesforce-ticket-agent.agent.md
 agent/
   AGENT.md
   README.md
@@ -67,6 +68,7 @@ This repo includes lightweight bridge files so different coding assistants find 
 - `AGENTS.md`: for Codex and other agent-aware tools.
 - `CLAUDE.md`: for Claude Code.
 - `.github/copilot-instructions.md`: for GitHub Copilot.
+- `.github/agents/salesforce-ticket-agent.agent.md`: selectable Copilot custom agent profile.
 
 The durable Salesforce source of truth is:
 
@@ -84,6 +86,7 @@ agent/
 AGENTS.md
 CLAUDE.md
 .github/copilot-instructions.md
+.github/agents/salesforce-ticket-agent.agent.md
 .gitignore
 ```
 
@@ -96,7 +99,7 @@ agent/traces/*
 
 Then update:
 
-- Replace `MY_SANDBOX` with the team sandbox alias, or keep it as an example placeholder.
+- Replace `MY_SANDBOX` with the team sandbox alias, keep it as an example placeholder, or rely on the current Salesforce CLI default target org after the agent confirms it is a sandbox.
 - Review `agent/config/org-policy.yml` for scratch, sandbox, and production rules.
 - Review `agent/config/allowed-commands.yml` whenever the Salesforce CLI version changes.
 - Keep secrets, `.env` files, access tokens, and org credentials out of Git.
@@ -107,10 +110,17 @@ For a Jira or ticket-driven request:
 
 ```text
 Use agent/skills/ticket-resolution.md.
+Use the current Salesforce CLI default target org if it is already configured and confirmed as sandbox.
 Work in sandbox only.
 Prefer Flow/config/validation/formulas before Apex.
 Use agent/scripts/sf_safe.py for Salesforce CLI commands where possible.
 Produce a change-set summary.
+```
+
+If you want to provide an explicit sandbox alias, add:
+
+```text
+Target sandbox alias: MY_SANDBOX
 ```
 
 For an admin automation request:
@@ -132,6 +142,12 @@ Do not deploy without explicit same-session approval.
 ## Quick Start
 
 Preview a policy decision without executing the command:
+
+```bash
+python3 agent/scripts/sf_safe.py --dry-run "sf org display --json"
+```
+
+Preview a policy decision for an explicit alias:
 
 ```bash
 python3 agent/scripts/sf_safe.py --dry-run "sf org display --target-org MY_SANDBOX --json"

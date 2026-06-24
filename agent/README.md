@@ -54,6 +54,7 @@ It does not:
    AGENTS.md
    CLAUDE.md
    .github/copilot-instructions.md
+   .github/agents/salesforce-ticket-agent.agent.md
    .gitignore
    ```
 
@@ -66,7 +67,7 @@ It does not:
 
 3. Update placeholders:
 
-   - Replace `MY_SANDBOX` with the team sandbox alias, or keep it as an example placeholder.
+   - Replace `MY_SANDBOX` with the team sandbox alias, keep it as an example placeholder, or rely on the current Salesforce CLI default target org after the agent confirms it is a sandbox.
    - Review `agent/config/org-policy.yml` for your scratch, sandbox, and production rules.
    - Review `agent/config/allowed-commands.yml` after Salesforce CLI upgrades.
 
@@ -80,6 +81,12 @@ It does not:
 
    ```text
    Use agent/skills/ticket-resolution.md. Work in sandbox only. Prefer Flow/config before Apex. Produce a change-set summary.
+   ```
+
+   If your Salesforce extension in VS Code is already using the same default org as the local `sf` CLI, you can say:
+
+   ```text
+   Use the current Salesforce CLI default target org if it is confirmed as sandbox.
    ```
 
 6. For CLI commands, prefer:
@@ -186,6 +193,13 @@ Preview policy decision:
 
 ```bash
 python3 agent/scripts/sf_safe.py --dry-run "sf org display --target-org MY_SANDBOX --json"
+# CONFIRMED: verified against local sf CLI 2.139.6 help output.
+```
+
+Use the current default target org:
+
+```bash
+python3 agent/scripts/sf_safe.py --dry-run "sf org display --json"
 # CONFIRMED: verified against local sf CLI 2.139.6 help output.
 ```
 

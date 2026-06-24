@@ -8,6 +8,7 @@ Resolve a Salesforce ticket from Jira or pasted ticket context by extracting req
 
 - Ticket context is provided by the user, Claude, Codex, GitHub Copilot, or pasted Jira text. Do not call Jira APIs in this scaffold.
 - Confirm target org alias and type before any command.
+- If the user does not provide an alias, use the current Salesforce CLI default target org after `sf org display --json` confirms it is a sandbox. This can be the same authenticated sandbox used by the Salesforce extension in VS Code if it is also configured for the local `sf` CLI.
 - Target org must be a sandbox for deploy, validation, data write, permission-change, or metadata-change work.
 - If the ticket lacks acceptance criteria, target object/field, affected user persona, automation trigger, or deployment expectation, ask clarifying questions before proposing a final solution.
 - Use `agent/skills/flow-automation-first.md` for solution design before proposing Apex.
@@ -20,6 +21,11 @@ Resolve a Salesforce ticket from Jira or pasted ticket context by extracting req
 
 2. Action: Confirm sandbox context.
    Exact command if applicable:
+   ```bash
+   sf org display --json
+   # CONFIRMED: verified against local sf CLI 2.139.6 help output.
+   ```
+   Or, when the user provides an explicit alias:
    ```bash
    sf org display --target-org MY_SANDBOX --json
    # CONFIRMED: verified against local sf CLI 2.139.6 help output.
@@ -101,7 +107,7 @@ Resolve a Salesforce ticket from Jira or pasted ticket context by extracting req
 ## Stop conditions
 
 - Ticket requirements or acceptance criteria are too vague to design safely.
-- Target org alias or type is unknown.
+- Target org alias/username or type is unknown.
 - Target org is production and the requested work is deploy, update, delete, permission-change, or metadata-change work.
 - The proposed solution requires Apex before declarative alternatives have been evaluated.
 - User has not approved validation or deployment in the same session.
